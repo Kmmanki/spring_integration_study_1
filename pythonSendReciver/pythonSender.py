@@ -1,5 +1,4 @@
 import socket, time
-from telnetlib import Telnet
 
 host="localhost"
 port=10001
