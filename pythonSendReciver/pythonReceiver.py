@@ -45,6 +45,6 @@ while isClose!='y':
     data = client_soc.recv(100)
     msg = data.decode() # 읽은 데이터 디코딩
     print('recv msg:', msg)
-    client_soc.sendall(bytes(msg, 'utf-8')) # 에코메세지 클라이언트로 보냄
+    client_soc.sendall(data) # 에코메세지 클라이언트로 보냄
 
 server_socket.close() # 사용했던 서버 소켓을 닫아줌

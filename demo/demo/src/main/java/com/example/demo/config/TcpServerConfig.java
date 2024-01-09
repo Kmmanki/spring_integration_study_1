@@ -31,14 +31,17 @@ public class TcpServerConfig {
     private String host;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageServiceImpl.class);
     @Bean
+
     public AbstractServerConnectionFactory serverConnectionFactory() {
         LOGGER.info("AbstractServerConnectionFactory");
         TcpNioServerConnectionFactory serverConnectionFactory = new TcpNioServerConnectionFactory(inboundPort);
         serverConnectionFactory.setUsingDirectBuffers(true);
+
         return serverConnectionFactory;
     }
 
     @Bean
+
     public AbstractClientConnectionFactory clientConnectionFactory() {
         LOGGER.info("AbstractServerConnectionFactory2");
         TcpNioClientConnectionFactory clientConnectionFactory = new TcpNioClientConnectionFactory(host,outboundPort);
@@ -56,18 +59,26 @@ public class TcpServerConfig {
         return new DirectChannel();
     }
 
-//    @Bean(name = "outboundChannel2")
-//    public MessageChannel outboundChannel2() {
-//        return new DirectChannel();
-//    }
+    @Bean(name = "outboundReplyChannel")
+    public MessageChannel outboundReplyChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean(name = "outboundReplyChannel2")
+    public MessageChannel outboundReplyChannel2() {
+        return new DirectChannel();
+    }
 
     @Bean
+
     public TcpInboundGateway inboundGateway(AbstractServerConnectionFactory serverConnectionFactory,
-                                            @Qualifier("inboundChannel") MessageChannel inboundChannel) {
+                                            @Qualifier("inboundChannel") MessageChannel inboundChannel,
+                                            @Qualifier("outboundReplyChannel2") MessageChannel outboundReplyChannel) {
         LOGGER.info("TcpInboundGateway");
         TcpInboundGateway tcpInboundGateway = new TcpInboundGateway();
         tcpInboundGateway.setConnectionFactory(serverConnectionFactory);
         tcpInboundGateway.setRequestChannel(inboundChannel);
+        tcpInboundGateway.setReplyChannel(outboundReplyChannel);
 //        tcpInboundGateway.setRequestChannelName("inboundChannel");
         return tcpInboundGateway;
     }
@@ -75,11 +86,11 @@ public class TcpServerConfig {
     @Bean
     @ServiceActivator(inputChannel = "outboundChannel")
     public TcpOutboundGateway outboundGateway(AbstractClientConnectionFactory clientConnectionFactory,
-                                              @Qualifier("outboundChannel") MessageChannel outboundChannel) {
+                                              @Qualifier("outboundReplyChannel") MessageChannel outboundReplyChannel) {
         LOGGER.info("outbound");
         TcpOutboundGateway tcpOutboundGateway = new TcpOutboundGateway();
         tcpOutboundGateway.setConnectionFactory(clientConnectionFactory);
-//        tcpOutboundGateway.setReplyChannelName("TcpClientEndPoint");
+        tcpOutboundGateway.setReplyChannel(outboundReplyChannel);
         return tcpOutboundGateway;
     }
 }
