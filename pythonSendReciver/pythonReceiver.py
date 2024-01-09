@@ -29,10 +29,10 @@ print('connected client addr:', addr)
 
 # recv(메시지크기): 소켓에서 크기만큼 읽는 함수
 # 소켓에 읽을 데이터가 없으면 생길 때까지 대기함
-data = client_soc.recv(100)
-msg = data.decode() # 읽은 데이터 디코딩
-print('recv msg:', msg)
-client_soc.sendall(msg.encode(encoding='utf-8')) # 에코메세지 클라이언트로 보냄
+while True:
+    data = client_soc.recv(100)
+    msg = data.decode() # 읽은 데이터 디코딩
+    print('recv msg:', msg)
+    client_soc.sendall(bytes(msg +'\r\n', 'utf-8')) # 에코메세지 클라이언트로 보냄
 
-time.sleep(5)
 server_socket.close() # 사용했던 서버 소켓을 닫아줌
