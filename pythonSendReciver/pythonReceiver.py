@@ -1,7 +1,13 @@
 import socket, time
+from threading import Thread
 
 host="localhost"
 port=10002
+isClose= 'N'
+
+def stopFunction():
+    global isClose
+    isClose = input("종료?")
 
 #Scoket Open
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,7 +23,8 @@ server_socket.bind((host, port))
 
 # 클라이언트 접속 준비 완료
 server_socket.listen()
-
+t1 =Thread(target=stopFunction, args=())
+t1.start()
 print('echo server start') # echo program: 입력한 값을 메아리치는 기능(그대로 다시 보냄)
 
 # accept(): 클라이언트 접속 기다리며 대기
@@ -27,12 +34,17 @@ client_soc, addr = server_socket.accept()
 
 print('connected client addr:', addr)
 
+
+
+
+
 # recv(메시지크기): 소켓에서 크기만큼 읽는 함수
 # 소켓에 읽을 데이터가 없으면 생길 때까지 대기함
-while True:
+while isClose!='y':
+    print(isClose)
     data = client_soc.recv(100)
     msg = data.decode() # 읽은 데이터 디코딩
     print('recv msg:', msg)
-    client_soc.sendall(bytes(msg +'\r\n', 'utf-8')) # 에코메세지 클라이언트로 보냄
+    client_soc.sendall(bytes(msg, 'utf-8')) # 에코메세지 클라이언트로 보냄
 
 server_socket.close() # 사용했던 서버 소켓을 닫아줌
