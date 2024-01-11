@@ -4,7 +4,7 @@ from threading import Thread
 host="localhost"
 port=10002
 isClose= 'N'
-
+from gtts import gTTS
 def stopFunction():
     global isClose
     isClose = input("종료?")
@@ -35,7 +35,10 @@ client_soc, addr = server_socket.accept()
 print('connected client addr:', addr)
 
 
-
+def makeMp3(text):
+    
+    tts = gTTS(text=text, lang='ko')
+    tts.save("helloKO.mp3")
 
 
 # recv(메시지크기): 소켓에서 크기만큼 읽는 함수
@@ -45,6 +48,8 @@ while isClose!='y':
     data = client_soc.recv(100)
     msg = data.decode() # 읽은 데이터 디코딩
     print('recv msg:', msg)
+    makeMp3(msg)
+    
     client_soc.sendall(data) # 에코메세지 클라이언트로 보냄
 
 server_socket.close() # 사용했던 서버 소켓을 닫아줌
