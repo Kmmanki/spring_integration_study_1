@@ -93,3 +93,8 @@ python과 Integration은 TCP 소켓으로 연결한다.
 
 python sender에서 1 이라는 입력을 주면 spring integration에서 1 > 2 메시지를 만들어 pythonReceiver 전달하고 pythonReceiver 는 전달 받은 메시지에 > 3을 붙여 1 > 2 > 3을 만들어 integration으로 reply한다. integration은 전달받은 1 > 2 > 3에 > 4를 붙여 1 > 2 > 3 > 4를 다시 reply하여 sender로 전송한다.
 
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbDyA7L%2FbtsF2R2LgIG%2FagMWCpgKYbGYvPdfZhRi2K%2Fimg.jpg"/>
+
+## 동작하는 동영상 URL
+https://patrasche25.tistory.com/110
+
