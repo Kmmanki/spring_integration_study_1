@@ -47,9 +47,12 @@ while isClose!='y':
     print(isClose)
     data = client_soc.recv(100)
     msg = data.decode() # 읽은 데이터 디코딩
-    print('recv msg:', msg)
-    makeMp3(msg)
+    msg = msg.rstrip("\r\n")
+    # print(bytes(msg)) 
+    msg = msg + " > 3\r\n"
+    # makeMp3(msg)
+    print(msg)
     
-    client_soc.sendall(data) # 에코메세지 클라이언트로 보냄
+    client_soc.sendall(msg.encode("utf-8")) # 에코메세지 클라이언트로 보냄
 
 server_socket.close() # 사용했던 서버 소켓을 닫아줌
