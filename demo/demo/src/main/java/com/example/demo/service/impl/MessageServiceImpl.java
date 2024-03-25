@@ -12,14 +12,14 @@ public class MessageServiceImpl implements MessageService {
     public byte[] processReceiveMessage(byte[] message) {
         String messageContent = new String(message);
         LOGGER.info("Receive message: {}", messageContent);
-        String responseContent = String.format("%s", messageContent);
+        String responseContent = String.format("%s > 2", messageContent);
         return responseContent.getBytes();
     }
     @Override
     public byte[] processSendMessage(byte[] message) {
         String messageContent = new String(message);
         LOGGER.info("Send message: {}", messageContent);
-        String responseContent = String.format("%s", messageContent);
+        String responseContent = String.format("%s > 4", messageContent);
         return responseContent.getBytes();
     }
 
